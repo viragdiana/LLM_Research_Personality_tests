@@ -2,96 +2,149 @@
 
 ## Introduction
 
-For the first version of the project, I want to focus on MBTI and Enneagram. These will be the two frameworks used in the initial proof of concept, before adding Big Five, Human Design and Color Analysis.
+For the initial version of the project, I want to focus on MBTI and Enneagram. These will be the two frameworks used in the first experiments.
 
-I am looking for information that explains each framework and its different types, rather than datasets containing social media posts labelled with personality types. The user will provide their own assessment results, so the purpose of the knowledge base is to give the LLM information about the characteristics and concepts associated with those results. The LLM should not try to determine someone's personality from their writing.
+I am looking for sources that describe the frameworks and their different types, rather than datasets containing social media posts labelled with personality types. The user will provide their own assessment results, and the LLM will use the information in the knowledge base to answer questions based on those results.
 
-I also want to keep track of where the information comes from and whether it can actually be included in the retrieval database. This is important because a source can be useful for research without necessarily allowing its content to be copied into a vector database.
+I have separated the sources into two groups. The first contains material that I can use as a basis for the initial knowledge base. The second contains official and academic references that I can use to check terminology, understand the frameworks and document their limitations.
 
-## MBTI
+## 1. MBTI
 
-For MBTI, I want to cover the four preference pairs: Extraversion–Introversion, Sensing–Intuition, Thinking–Feeling and Judging–Perceiving. Their combinations form the 16 MBTI types. I am also interested in type dynamics and the cognitive processes associated with the framework.
-
-### Selected corpus source
+### Corpus source
 
 **Myers–Briggs Type Indicator — Wikipedia**
 
-https://en.wikipedia.org/wiki/Myers%E2%80%93Briggs_Type_Indicator
+[Article](https://en.wikipedia.org/wiki/Myers%E2%80%93Briggs_Type_Indicator)
 
-This article gives an overview of the MBTI framework, including its four preference pairs, its connection to Jung's theory of psychological types, type dynamics and some of the criticism surrounding the model.
+[Selected revision](https://en.wikipedia.org/w/index.php?title=Myers%E2%80%93Briggs_Type_Indicator&oldid=1368276565)
 
-I selected it as an initial corpus source because the article is available under the Creative Commons Attribution-ShareAlike 4.0 license. This allows reuse under the conditions of that license, including attribution and ShareAlike requirements when adapting the material.
+[Revision history](https://en.wikipedia.org/w/index.php?title=Myers%E2%80%93Briggs_Type_Indicator&action=history)
 
-The article is useful for understanding the overall framework, but it does not provide detailed descriptions for all 16 types. I will need to investigate an additional source for that part before considering the MBTI corpus complete.
+This article explains the four preference pairs: Extraversion–Introversion, Sensing–Intuition, Thinking–Feeling and Judging–Perceiving. It also covers the historical background of the framework, cognitive functions, type dynamics and some of the criticism surrounding its reliability and validity.
 
-The article was last edited on 8 August 2026. I accessed it on 11 November 2026.
+I will use it as an introductory source for the MBTI concepts. However, it does not provide a complete collection of detailed descriptions for all 16 types, so an additional source will be needed if I want to represent each type individually in the knowledge base.
 
-### Additional reference sources
+**Source information**
+
+- Author: Wikipedia contributors
+- Last revision: 8 August 2026
+- Revision ID: 1368276565
+- Retrieved: 11 November 2026
+- License: Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0), as stated in the article footer.
+
+The text can be reused under the license conditions. This includes providing attribution, linking to the original article and license, indicating modifications and respecting the ShareAlike requirement for adapted material. I will use the article text, not assume that its images and other media have the same license.
+
+### Additional references
 
 **Myers & Briggs Foundation — The 16 MBTI Personality Types**
 
-https://www.myersbriggs.org/my-mbti-personality-type/the-16-mbti-personality-types/home.htm
+[Official descriptions of the 16 types](https://www.myersbriggs.org/my-mbti-personality-type/the-16-mbti-personality-types/home.htm)
 
-This is useful because it provides descriptions of all 16 MBTI types. I will use it as a reference when checking how the types are described in the official framework.
+This page provides descriptions of all 16 types and is useful for checking the terminology and the way each type is presented in the official MBTI framework.
 
-However, the page contains excerpts from a copyrighted publication by The Myers-Briggs Company. Its copyright policy specifically restricts copying its publications into stored databases or retrieval systems without prior written authorization. I will therefore not add the full page to the RAG corpus unless the necessary permission is obtained.
+I will keep it as a reference rather than copying its text into the retrieval database. The Myers-Briggs publisher's copyright policy restricts reproduction of its publications in stored databases and retrieval systems without prior written authorization.
 
-**Myers & Briggs Foundation — The Processes of Type Dynamics**
+**Myers & Briggs Foundation — Type Dynamics: Processes**
 
-https://www.myersbriggs.org/unique-features-of-myers-briggs/type-dynamics-processes/
+[Type Dynamics and Processes](https://www.myersbriggs.org/unique-features-of-myers-briggs/type-dynamics-processes/)
 
-I will use this page as a reference for the dominant, auxiliary, tertiary and inferior processes. These are relevant to the cognitive-function approach, but I will distinguish the theoretical framework from claims that have strong empirical support.
+This page explains the dominant, auxiliary, tertiary and inferior processes. It is relevant because I want to investigate whether cognitive functions should be represented separately from the four-letter type result.
 
-## Enneagram
+These official pages are useful references, but their full text will not be included in the corpus unless the applicable reuse permissions are established.
 
-For Enneagram, I want to focus initially on the nine core types and the motivations, fears and desires associated with each of them. I am also interested in wings and the relationships between types, but I will keep these as possible extensions rather than treating them as equally well-supported parts of the model.
+## 2. Enneagram
 
-One thing I need to consider is that different Enneagram authors and schools do not always use exactly the same descriptions. For the initial corpus, I will use one consistent interpretation and record which source it comes from rather than combining different versions without distinction.
-
-### Selected corpus source
+### Corpus source
 
 **Enneagram of Personality — Wikipedia**
 
-https://en.wikipedia.org/wiki/Enneagram_of_Personality
+[Article](https://en.wikipedia.org/wiki/Enneagram_of_Personality)
 
-This article provides an overview of the Enneagram and a summary of the nine types. It includes concepts such as basic fears, basic desires, passions, virtues, wings and the relationships between types.
+[Selected revision](https://en.wikipedia.org/w/index.php?title=Enneagram_of_Personality&oldid=1363671110)
 
-The article explains that its table of type characteristics is based primarily on the work of Don Richard Riso and Russ Hudson, together with material from Charles Tart. I will use this as the reference for the initial Enneagram representation, while keeping in mind that other Enneagram traditions may describe some aspects differently.
+[Revision history](https://en.wikipedia.org/w/index.php?title=Enneagram_of_Personality&action=history)
 
-The article is available under the Creative Commons Attribution-ShareAlike 4.0 license, so it can be included in the initial corpus provided that the attribution and license requirements are respected.
+This article is more useful for the initial prototype because it contains a structured table describing all nine Enneagram types.
 
-The article was last edited on 11 July 2026. I accessed it on 11 November 2026.
+The table includes characteristic roles, ego fixations, basic fears, basic desires, passions, virtues and the relationships between types under stress and security. The article also covers the three triads, wings and instinctual subtypes.
 
-### Additional reference sources
+The table is based primarily on Don Richard Riso and Russ Hudson's *Understanding the Enneagram*, together with material from Charles Tart. The article also notes that other Enneagram authors may disagree with some of these descriptions.
 
-**Alexander, M., and Schnipke, B. — The Enneagram: A Primer for Psychiatry Residents (2020)**
+I will use the nine-type table and the relevant sections about triads, wings and connections between types as the initial basis for the Enneagram knowledge base.
 
-https://doi.org/10.1176/appi.ajp-rj.2020.150301
+**Source information**
 
-This article, published in the *American Journal of Psychiatry Residents' Journal*, provides an overview of the Enneagram and summarizes the nine types, including their basic fears and desires.
+- Author: Wikipedia contributors
+- Last revision: 11 July 2026
+- Revision ID: 1363671110
+- Retrieved: 11 November 2026
+- License: Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0), as stated in the article footer.
 
-I will use it as an academic reference to compare the descriptions in the corpus. It is not currently selected as a raw retrieval source because I have not established a license that allows its full text to be copied into the database.
+The same attribution and ShareAlike requirements apply here. I will also preserve the selected revision so that the source used in the experiments can be identified later.
 
-**Hook, J. N., Hall, T. W., Davis, D. E., Van Tongeren, D. R., and Conner, M. — The Enneagram: A Systematic Review of the Literature and Directions for Future Research (2021)**
+### Additional references
 
-https://doi.org/10.1002/jclp.23097
+**Alexander, M., and Schnipke, B. (2020) — The Enneagram: A Primer for Psychiatry Residents**
 
-I will use this review to understand the research evidence and limitations of the Enneagram. The authors reviewed 104 independent samples and found mixed evidence for reliability and validity. They also noted that there is limited research supporting some secondary parts of the theory, such as wings and movement between types.
+[Article](https://doi.org/10.1176/appi.ajp-rj.2020.150301)
 
-This source is important because I do not want the project to present the Enneagram as a scientifically established personality measurement system. It will be used as an interpretive framework based on the user's own assessment result.
+Published in the *American Journal of Psychiatry Residents' Journal*, Volume 15, Issue 3, on 6 March 2020.
 
-## Data Collection and Organization
+This article provides an overview of the nine types, including their basic fears, desires and characteristic behaviour patterns. It also discusses wings, stress and security patterns and instinctual variants.
 
-For the initial version, I will collect the two selected corpus sources and keep the original material separate from the processed documents used for retrieval.
+I will use it as an academic reference to compare the descriptions in the knowledge base. I have not established a license that allows the article's full text to be copied into the retrieval database, so it will remain a reference source.
 
-I also want to preserve the source information when processing the documents. This means keeping the title, author or organization, URL, publication or last-edited date, retrieval date and license information. That way, when the LLM retrieves information, it should be possible to identify where that information came from.
+**Hook, J. N., Hall, T. W., Davis, D. E., Van Tongeren, D. R., and Conner, M. (2021) — The Enneagram: A Systematic Review of the Literature and Directions for Future Research**
 
-For sources that allow reuse under a license, I will keep the required attribution and record any modifications made during processing. For sources that are only used for reference, I will keep their bibliographic information without copying their full content into the retrieval database.
+[Article](https://doi.org/10.1002/jclp.23097)
 
-## Initial Scope
+Published in the *Journal of Clinical Psychology*, Volume 77, Issue 4, pages 865–883.
 
-The initial proof of concept will use MBTI and Enneagram. The user will provide their own results for both frameworks, and the LLM will use the knowledge base to interpret those results when answering a question.
+This systematic review examines the empirical research on the Enneagram across 104 independent samples. The authors found mixed evidence for reliability and validity. They also point out that there is limited empirical support for some additional aspects of the theory, including wings and movement between types.
 
-At this stage, I will focus on the basic framework concepts and the nine Enneagram types. The MBTI source collection still needs an additional reusable source for detailed descriptions of all 16 types.
+I will use this article to document the scientific limitations of the framework. It is not intended to provide the type descriptions used for retrieval.
 
-After this initial version, I can extend the knowledge base with Big Five/BFAS, Human Design and 16-season Color Analysis. I will keep these frameworks separate because they describe different aspects of a person and should not all be interpreted in the same way.
+## 3. Data Collection
+
+For the initial version, the two Wikipedia articles are the selected corpus sources. I will preserve the original text and the source information separately from the processed documents used for retrieval.
+
+When processing the articles, I want to keep the framework and source information attached to the extracted content. This will make it possible to identify whether a retrieved description belongs to MBTI or Enneagram and where that information originally came from.
+
+For Wikipedia material, I will preserve the original article URL, revision ID, authorship attribution, license and any changes made during processing. I will also keep the original source text unchanged so that I can compare it with the processed version.
+
+The official MBTI pages and academic publications will remain reference material until their reuse conditions are established.
+
+## 4. Initial Scope
+
+The first knowledge base will focus on the four MBTI preference pairs and the nine Enneagram types. I will also investigate how much additional information about cognitive functions, wings and relationships between types is useful for answering personalized questions.
+
+The two frameworks will remain distinguishable in the knowledge base. I do not want to present their categories as equivalent measurements or assume that every characteristic associated with a type is scientifically established.
+
+The next step will be to identify an additional reusable source for detailed descriptions of all 16 MBTI types. This is the main gap in the current source collection.
+
+After the initial experiments, I plan to investigate adding Big Five/BFAS, Human Design and 16-season Color Analysis as separate frameworks.
+
+### Additional corpus source
+
+**Personality Data Project — 16 Personality Types**
+
+[All 16 personality types](https://www.personalitydata.org/16-types/personality-types)
+
+[Example: INTJ profile](https://www.personalitydata.org/16-types/intj)
+
+This source provides individual descriptions for all 16 four-letter personality types. Each type has its own page with an overview, general principles and an explanation of the four letters. Additional pages cover strengths and weaknesses, extended subtypes, relationships and careers.
+
+I will use the overview pages to fill the gap in the MBTI source collection, since the Wikipedia article does not provide detailed profiles for all 16 types.
+
+The descriptions are based on the 16-type Jungian model. I will treat them as secondary interpretive descriptions rather than official MBTI definitions. I will also avoid using the population statistics and demographic charts as personality characteristics, since these are based on separate self-reported survey data.
+
+**Source information**
+
+- Organization: Personality Data Project (PersonalityData.org)
+- Named contributor: Ellie Simmonds, MSc, is listed on the INTJ profile; the project's About page also lists her among the psychologists who helped develop its personality assessments.
+- Format: Individual HTML pages for the 16 types
+- Coverage: General descriptions, type principles and four-letter preference explanations
+- License: Creative Commons Attribution 4.0 International (CC BY 4.0), except where otherwise noted
+- Retrieved: 11 November 2026
+
+I can reuse and adapt the licensed content provided that I give appropriate attribution to PersonalityData.org and link to the original source and license. I will preserve the original URLs in the processed documents.
