@@ -1,4 +1,6 @@
-
+import os
+from google import genai
+from google.genai import types
 from pathlib import Path
 
 
@@ -112,3 +114,41 @@ def split_into_chunks(documents, chunk_size=150, overlap=30):
             start = end - overlap
 
     return chunks
+
+EMBEDDING_MODEL = "gemini-embedding-001"
+EMBEDDING_DIMENSION = 768
+
+
+def generate_document_embeddings(chunks):
+    """Generate embeddings for document chunks."""
+
+    api_key = os.getenv("GEMINI_API_KEY")
+
+    if not api_key:
+        raise RuntimeError("GEMINI_API_KEY is not set.")
+
+    if not chunks:
+        return []
+
+    client = genai.Client(api_key=api_key)
+
+    texts = [chunk["content"] for chunk in chunks]
+
+    response = client.models.embed_content(
+        model=EMBEDDING_MODEL,
+        contents=texts,
+        config=types.EmbedContentConfig(
+            task_type="RETRIEVAL_DOCUMENT",
+            output_dimensionality=EMBEDDING_DIMENSION
+        )
+    )
+
+    if not response.embeddings or len(response.embeddings) != len(chunks):
+        raise RuntimeError("The embedding response does not match the input chunks.")
+
+    embeddings = [
+        embedding.values
+        for embedding in response.embeddings
+    ]
+
+    return embeddings
