@@ -31,6 +31,8 @@ def save_result(profile, question, answer):
         file.write(f"\n**Profile:** {profile}\n")
         file.write(f"\n**Question:** {question}\n")
         file.write(f"\n### Response\n\n{answer}\n")
+        file.write("\n### Observations\n\n")
+        file.write("[Add your observations here.]\n")
         file.write("\n---\n")
 
 
