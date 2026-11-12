@@ -1,7 +1,8 @@
 
 import os
 import json
-
+from datetime import datetime
+from pathlib import Path
 from google import genai
 
 
@@ -17,6 +18,20 @@ USER_PROFILE = {
 }
 
 QUESTION = "What study method might suit me best?"
+
+def save_result(profile, question, answer):
+
+    results_file = Path("results/baseline_results.md")
+    results_file.parent.mkdir(parents=True, exist_ok=True)
+
+    with results_file.open("a", encoding="utf-8") as file:
+        file.write(f"\n## Test — {datetime.now().astimezone().isoformat(timespec='seconds')}\n")
+        file.write(f"\n**Approach:** Baseline (no RAG)\n")
+        file.write(f"\n**Model:** {MODEL_NAME}\n")
+        file.write(f"\n**Profile:** {profile}\n")
+        file.write(f"\n**Question:** {question}\n")
+        file.write(f"\n### Response\n\n{answer}\n")
+        file.write("\n---\n")
 
 
 def run_baseline(profile, question):
@@ -74,3 +89,5 @@ if __name__ == "__main__":
 
     print("\n=== Gemini Response ===\n")
     print(answer)
+    save_result(user_profile, question, answer)
+    print("\nResult saved to results/baseline_results.md")
