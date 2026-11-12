@@ -72,3 +72,43 @@ def load_documents():
         })
 
     return documents
+
+def split_into_chunks(documents, chunk_size=150, overlap=30):
+    """Split documents into overlapping word-based chunks."""
+
+    if chunk_size <= 0:
+        raise ValueError("chunk_size must be positive.")
+
+    if overlap < 0 or overlap >= chunk_size:
+        raise ValueError("overlap must be smaller than chunk_size.")
+
+    chunks = []
+
+    for document in documents:
+        words = document["content"].split()
+
+        start = 0
+        chunk_index = 0
+
+        while start < len(words):
+            end = min(start + chunk_size, len(words))
+
+            chunk_text = " ".join(words[start:end])
+
+            # Preserve the original document metadata.
+            chunk_metadata = document["metadata"].copy()
+            chunk_metadata["chunk_index"] = chunk_index
+
+            chunks.append({
+                "content": chunk_text,
+                "metadata": chunk_metadata
+            })
+
+            chunk_index += 1
+
+            if end == len(words):
+                break
+
+            start = end - overlap
+
+    return chunks
