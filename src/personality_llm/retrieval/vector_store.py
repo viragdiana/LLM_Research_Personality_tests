@@ -2,12 +2,12 @@ import os
 from google import genai
 from google.genai import types
 from pathlib import Path
-
+import chromadb
 
 # Locate the project root independently of the working directory.
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 RAW_DATA_DIR = PROJECT_ROOT / "data" / "raw"
-
+VECTOR_STORE_DIR = PROJECT_ROOT / "vector_store"
 
 def load_documents():
     """Load Markdown documents and extract their metadata."""
@@ -152,3 +152,59 @@ def generate_document_embeddings(chunks):
     ]
 
     return embeddings
+
+def store_embeddings(chunks, embeddings):
+    """Store document chunks, embeddings and metadata in ChromaDB."""
+
+    if len(chunks) != len(embeddings):
+        raise ValueError(
+            "The number of chunks must match the number of embeddings."
+        )
+
+    if not chunks:
+        raise ValueError("There are no chunks to store.")
+
+    # Create a persistent local ChromaDB client.
+    client = chromadb.PersistentClient(
+        path=str(VECTOR_STORE_DIR)
+    )
+
+    # Create the collection or reuse it if it already exists.
+    collection = client.get_or_create_collection(
+        name="personality_documents",
+        metadata={"hnsw:space": "cosine"}
+    )
+
+    ids = []
+    metadatas = []
+
+    for chunk in chunks:
+        metadata = chunk["metadata"].copy()
+
+        # Use the original file and chunk number for a unique ID.
+        chunk_id = (
+            f"{metadata['source_file']}"
+            f"::chunk-{metadata['chunk_index']}"
+        )
+
+        ids.append(chunk_id)
+
+        # ChromaDB metadata must contain simple values.
+        metadata = {
+            key: value
+            for key, value in metadata.items()
+            if value is not None
+            and isinstance(value, (str, int, float, bool))
+        }
+
+        metadatas.append(metadata)
+
+    # Insert new records or update existing ones.
+    collection.upsert(
+        ids=ids,
+        documents=[chunk["content"] for chunk in chunks],
+        embeddings=embeddings,
+        metadatas=metadatas
+    )
+
+    return collection
