@@ -208,3 +208,61 @@ def store_embeddings(chunks, embeddings):
     )
 
     return collection
+
+def retrieve_relevant_chunks(profile, question, n_results=3):
+    """Find the most relevant document chunks for a user question."""
+
+    # Build a search query using the user's profile and question.
+    query_text = f"""
+    MBTI type: {profile['mbti']}
+    Enneagram type: {profile['enneagram']}
+
+    Question: {question}
+    """
+
+    # Generate an embedding for the search query.
+    genai_client = genai.Client(
+        api_key=os.getenv("GEMINI_API_KEY")
+    )
+
+    response = genai_client.models.embed_content(
+        model=EMBEDDING_MODEL,
+        contents=query_text,
+        config=types.EmbedContentConfig(
+            task_type="RETRIEVAL_QUERY",
+            output_dimensionality=EMBEDDING_DIMENSION
+        )
+    )
+
+    query_embedding = response.embeddings[0].values
+
+    # Open the existing local vector database.
+    chroma_client = chromadb.PersistentClient(
+        path=str(VECTOR_STORE_DIR)
+    )
+
+    collection = chroma_client.get_collection(
+        name="personality_documents"
+    )
+
+    if collection.count() == 0:
+        raise ValueError("The vector database is empty.")
+
+    # Search for the nearest vectors.
+    results = collection.query(
+        query_embeddings=[query_embedding],
+        n_results=min(n_results, collection.count()),
+        include=["documents", "metadatas", "distances"]
+    )
+
+    # Convert ChromaDB's results into a simpler list.
+    retrieved_chunks = []
+
+    for i, document in enumerate(results["documents"][0]):
+        retrieved_chunks.append({
+            "content": document,
+            "metadata": results["metadatas"][0][i],
+            "distance": results["distances"][0][i]
+        })
+
+    return retrieved_chunks
